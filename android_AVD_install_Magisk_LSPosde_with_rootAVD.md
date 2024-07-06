@@ -26,6 +26,8 @@
 2. **启动AVD**
 
    - 确保在Android Studio刚打开时启动AVD，以避免锁定问题。
+   - 不知道为什么，在项目编辑模块的AVD管理器经常假死，看起来虚拟机关了，就是无法启动提示still running.
+   - 但是在Android Studio启动页面（展示项目列表页面）中AVD页面就很正常
 
 3. **处理锁文件**
 
@@ -52,6 +54,7 @@
 1. **下载LSPosed**
 
    - 获取最新的LSPosed ZIP文件。注意LSPosed有riru和Zygisk版本。为了简单选择Zygisk版本。
+   - LSPosed不再更新了
 
 2. **将LSPosed ZIP传输到模拟器**
 
@@ -69,11 +72,45 @@
    - 打开LSPosed Manager应用，验证LSPosed是否正常运行。
    - 如果没有自动安装LSPosed Manager，需要将LSPosed安装包解压，里面有manager.apk，直接安装即可。
 
+#### 安装EdXposed
+
+1. **下载EdXposed**
+
+   - 获取最新的EdXposed ZIP文件。EdXposed-v0.5.2.2
+   - 下载riru，目前EdXposed可用riru为 riru-v25.4.4。（riru已经不再更新，后续EdXposed也不再更新了）
+   - 下载EdXposedManager-4.6.2
+
+2. **将EdXposed ZIP传输到模拟器**
+
+   ```bash
+   adb push EdXposed-vX.X.X.zip /sdcard/
+   ```
+
+3. **安装EdXposed**
+
+   - 打开Magisk应用，选择“Modules”选项卡，点击“Install from Storage”，选择传输到模拟器中的 ZIP文件并安装。
+   - 首先安装riru，重启后再安装EdXposed，如果EdXposed Manager提示更新可以安装EdXposedManager-4.6.2
+
+4. **验证安装**
+
+   - 重启后，打开Magisk应用，确保EdXposed模块已启用。
+   - 打开EdXposed Manager应用，验证EdXposed是否正常运行。
+   - 如果没有自动安装EdXposed Manager，需要将EdXposed安装包解压，里面有manager.apk，直接安装即可。
+
 #### 解决ADB offline问题
 
 1. 强制退出多余的qemu进程
    - 使用Spotlight搜索“Activity Monitor”。
    - 搜索qemu，强制退出多余的qemu进程。
+
+#### AVD无法启动的问题
+
+1. AVD有时候会无法启动，有两种解决方法
+
+   - 打开Android Studio首次启动窗口（包括代码列表的页面），设置里面找到AVD Manager，选择其中的虚拟机列表冷启动
+   - 
+
+   
 
 通过以上步骤，你可以在AVD模拟器上成功安装Magisk和LSPosed。如果遇到问题，可以根据实际情况调整操作。
 
