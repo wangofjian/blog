@@ -10,30 +10,47 @@
 
 2. **查看APP自启动的方法**：
 
-   - 可以使用`adb logcat | grep BroadcastQueue`命令来查看APP的自启动情况。此命令会过滤日志，显示广播队列的相关信息，从而帮助识别哪些广播事件触发了APP的启动。
+   - 可以使用以下命令来查看APP的自启动情况。此命令会过滤日志，显示广播队列的相关信息，从而帮助识别哪些广播事件触发了APP的启动。
+
+     ```bash
+     adb logcat | grep BroadcastQueue
+     ```
+
+     
 
 3. **手动触发APP启动**：
 
    - 如果需要手动触发APP的启动，可以执行以下命令来触发系统广播：
 
-     ```
-     sh
-     复制代码
+     ```bash
      adb shell am broadcast -a android.net.conn.CONNECTIVITY_CHANGE --debug-log-resolution
      ```
+     
+     这个命令会发送一个模拟的网络连接变化广播（`android.net.conn.CONNECTIVITY_CHANGE`），如果APP注册了对该广播的接收器，就会被触发启动。
+  
+   - 如果特殊广播，需要root权限
 
-   - 这个命令会发送一个模拟的网络连接变化广播（`android.net.conn.CONNECTIVITY_CHANGE`），如果APP注册了对该广播的接收器，就会被触发启动。
+     ```bash
+     adb shell su -c "am broadcast --debug-log-resolution -a android.net.conn.CONNECTIVITY_CHANGE"
+     ```
+
+     
 
 4. **常用自启动事件**：
 
    - 以下是一些常用的自启动事件：
-     - `android.intent.action.BOOT_COMPLETED`
-     - `android.intent.action.PACKAGE_ADDED`
-     - `android.intent.action.PACKAGE_REMOVED`
-     - `android.net.conn.CONNECTIVITY_CHANGE`
-     - `android.intent.action.MEDIA_SCANNER_STARTED`
-     - `android.intent.action.MEDIA_SCANNER_FINISHED`
-     - `android.intent.action.MEDIA_EJECT`
+     
+     ```
+     android.intent.action.BOOT_COMPLETED
+     android.intent.action.PACKAGE_ADDED
+     android.intent.action.PACKAGE_REMOVED
+     android.net.conn.CONNECTIVITY_CHANGE
+     android.intent.action.DOWNLOAD_COMPLETE
+     android.intent.action.MEDIA_SCANNER_STARTED
+     android.intent.action.MEDIA_SCANNER_FINISHED
+     android.intent.action.MEDIA_EJECT
+     ```
+     
 
 5. **自启动hook检查方案**：
 
@@ -57,7 +74,28 @@
 
       - 重点是第二行代码，设置了`FLAG_DEBUG_LOG_RESOLUTION`，这样在LogCat中会打印出所有注册了`android.provider.Telephony.SMS_RECEIVED`的BroadcastReceiver。用`IntentResolver`作为TAG过滤日志可以更方便地查看相关信息。
 
-   2. **Xposed hook相关的方法**：
+      - 使用adb logcat 过滤相关的日志
+
+        ```bash
+        adb logcat |grep -iE "IntentResolver.*BroadcastFilter" |grep "targetAPP"
+        ```
+
+        特殊情况发送广播失败，需要查看logcat日志
+
+        ```bash
+        adb logcat |grep "BroadcastQueue" |grep "targetAPP"
+        adb logcat |grep "IntentResolver" |grep “targetAPP"
+        ```
+
+        以上两种情况汇总后，可以一条命令检查结果
+
+        ```bash
+        adb logcat |grep -iE "BroadcastQueue|IntentResolver" |grep "targetAPP"
+        ```
+
+        
+
+   2. **Xposed hook相关的方法**（待定）：
 
       - 尝试hook以下两个方法，以监控和分析自启动过程：
         - `android.content.BroadcastReceiver->onReceive`
