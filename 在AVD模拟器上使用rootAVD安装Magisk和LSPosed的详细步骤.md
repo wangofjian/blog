@@ -23,13 +23,25 @@
    ./rootAVD.sh system-images/android-30/google_apis_playstore/arm64-v8a/ramdisk.img
    ```
 
-2. **启动AVD**
+   之后AVD模拟器会自动关闭。此时需要手动选择模拟器Code Boot，可看到Magisk已经安装完毕。 此时能看到Magisk已安装版本。
 
+   此时Magisk会有个提示，Magisk Requires Additional Setup,点确定模拟器自动重启。
+
+   <img width="434" alt="Magisk_Requires_Additional_Setup" src="https://github.com/user-attachments/assets/845fb36a-ca51-476b-9526-afd76085374f">
+
+   重启之后就会Magisk就正常安装好了。
+
+
+   
+
+3. **启动AVD**
+
+   - 以上步骤
    - 确保在Android Studio刚打开时启动AVD，以避免锁定问题。
    - 不知道为什么，在项目编辑模块的AVD管理器经常假死，看起来虚拟机关了，就是无法启动提示still running.
    - 但是在Android Studio启动页面（展示项目列表页面）中AVD页面就很正常
 
-3. **处理锁文件**
+4. **处理锁文件**
 
    - 如果遇到模拟器自动关机且无法重启的问题，手动删除锁文件：
 
@@ -39,11 +51,11 @@
      rm /Users/XXX/.android/avd/Pixel_7_API_35.avd/*.lock
      ```
 
-4. **选择兼容的模拟器**
+5. **选择兼容的模拟器**
 
    - 如果遇到失败，尝试使用不同API版本的模拟器。例如，pixel3_API28失败后，使用pixel3_API30成功。
 
-5. **修复Magisk环境**
+6. **修复Magisk环境**
 
    - 重启后打开Magisk，点击提示进行修复并自动重启。
    - 确认Magisk正常安装且版本显示正确。
