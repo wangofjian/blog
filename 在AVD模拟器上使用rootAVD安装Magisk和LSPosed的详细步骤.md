@@ -120,7 +120,15 @@
 1. AVD有时候会无法启动，有两种解决方法
 
    - 打开Android Studio首次启动窗口（包括代码列表的页面），设置里面找到AVD Manager，选择其中的虚拟机列表冷启动
-   - 
+  
+
+### 运行AVD模拟器提示CPU does not support VT-x
+
+   - 解决方法：
+   - Android Studio， Tools -> SDK Manager -> SDK Tools (tab) -> Deselect 'Android Emulator' -> OK
+   - Now, when you try to run your app, or launch device from AVD Manager, it will give the 'Install Emulator' error -> Click Ok. This will automatically download the correct version.
+   - 先删除Android Emulator，删除以后重新运行模拟器，此时会提示安装Android Emulator ，自动安装即可。
+
 
    
 
